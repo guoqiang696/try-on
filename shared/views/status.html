@@ -1,0 +1,188 @@
+<main data-main tabindex="-1" class="flex-grow p-gutter md:p-margin-desktop w-full max-w-container-max mx-auto pb-24 md:pb-8 box-border" >
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Primary Generation State -->
+<div class="lg:col-span-8 flex flex-col gap-8">
+<!-- 1. Generating State Panel -->
+<section aria-live="polite" class="glass-panel rounded-2xl p-8 relative overflow-hidden" role="status">
+<!-- Decorative background element -->
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex justify-between items-start mb-8 relative z-10">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1 flex items-center gap-2">
+<span class="material-symbols-outlined animate-spin text-primary">progress_activity</span>
+                                    AI 渲染进行中
+                                </h3>
+<p class="font-body-md text-body-md text-on-surface-variant">正在为您合成高精度试衣效果图…</p>
+</div>
+<div class="text-right">
+<div class="font-display-md text-display-md text-secondary tracking-tight tabular-nums">65%</div>
+<div class="font-label-sm text-label-sm text-primary bg-primary/10 px-3 py-1 rounded-full inline-block mt-1">预计剩余 25s</div>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden mb-12 shadow-inner relative z-10">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[65%] rounded-full progress-glow relative">
+<div class="absolute right-0 top-0 bottom-0 w-20 bg-white/30 blur-md animate-[pulse-blue_1.5s_infinite]"></div>
+</div>
+</div>
+<!-- Stepper -->
+<div class="relative z-10">
+<!-- Connecting Line -->
+<div class="absolute top-4 left-6 right-6 h-0.5 bg-surface-container-high -z-10"></div>
+<div class="absolute top-4 left-6 w-[60%] h-0.5 bg-secondary -z-10 transition-all duration-500"></div>
+<div class="flex justify-between">
+<!-- Step 1: Done -->
+<div class="flex flex-col items-center gap-3 w-24">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary text-center">任务提交</span>
+</div>
+<!-- Step 2: Done -->
+<div class="flex flex-col items-center gap-3 w-24">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary text-center">图质检测</span>
+</div>
+<!-- Step 3: Done -->
+<div class="flex flex-col items-center gap-3 w-24">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary text-center">姿态分析</span>
+</div>
+<!-- Step 4: Active -->
+<div class="flex flex-col items-center gap-3 w-24">
+<div class="w-8 h-8 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center shadow-[0_0_10px_rgba(37,99,235,0.3)] relative">
+<div class="absolute inset-0 rounded-full border-2 border-primary animate-ping opacity-50"></div>
+<span class="material-symbols-outlined text-sm animate-pulse-fast">brush</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold text-center">AI 渲染</span>
+</div>
+<!-- Step 5: Pending -->
+<div class="flex flex-col items-center gap-3 w-24">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border-2 border-outline-variant text-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline-variant text-center">细节优化</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Success Feedback Area -->
+<section class="glass-panel panel-emphasis-secondary rounded-2xl p-8">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">task_alt</span>
+</div>
+<div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">生成完成</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">4 张效果图已保存至作品库。</p>
+</div>
+</div>
+<button data-goto="gallery" class="bg-surface-container border border-outline-variant text-on-surface font-label-md text-label-md px-6 py-2 rounded-xl hover:bg-surface-container-high transition-colors flex items-center gap-2">
+                                前往作品库
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<!-- Thumbnails -->
+<div class="aspect-[3/4] rounded-xl overflow-hidden bg-surface-container-highest border border-white/20 shadow-sm hover:shadow-md transition-all hover:scale-[1.02] cursor-pointer group relative">
+<img alt="High fashion editorial shot of a woman modeling a vibrant yellow jacket. The lighting is crisp and modern, set against a clean, light-mode studio background. The style is premium fashion retail photography, emphasizing the texture and fit of the garment with a high-end, sophisticated aesthetic." class="w-full h-full object-cover" data-alt="High fashion editorial shot of a woman modeling a vibrant yellow jacket. The lighting is crisp and modern, set against a clean, light-mode studio background. The style is premium fashion retail photography, emphasizing the texture and fit of the garment with a high-end, sophisticated aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDduutE_5in_eT-jJNTTJbmXxF86omV7P-OZHFWEIQfIkzAeS8GcMe7HGrJxYq0lv8qOZg0L3PbXv1YJ2w5cl5MAV_j2cKMMJEYSbtmd6rNmfkUukapRYLkoA3uSRNQXAHmoYPVhr3GiEaQBgK8W9CFfRm_dY5g2sXf4CQ5J2yBRwDLPa7tr5CFXvkavmiag7TPwuse0s9gQe-uo1-Rxxhn38t8CUvnk_4TxQDDXmFcNocLsxNnSOMNCDnLE8Ow8YEy8Gpm7fATtLWo"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md">zoom_in</span>
+</div>
+</div>
+<div class="aspect-[3/4] rounded-xl overflow-hidden bg-surface-container-highest border border-white/20 shadow-sm hover:shadow-md transition-all hover:scale-[1.02] cursor-pointer group relative">
+<img alt="A different angle of a woman modeling a vibrant yellow jacket. Crisp, bright studio lighting enhances the light-mode UI aesthetic. The imagery feels high-tech yet fashion-forward, suitable for a premium virtual try-on application." class="w-full h-full object-cover" data-alt="A different angle of a woman modeling a vibrant yellow jacket. Crisp, bright studio lighting enhances the light-mode UI aesthetic. The imagery feels high-tech yet fashion-forward, suitable for a premium virtual try-on application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvoQki1HpPDhksgbpCXXEToxrwBpm0V1-UQzwyvTolN8xaKiEoX4QAr_yS8EcMxbm39hqqyTe6kZVjvmabd0M7GGvXw-y0MSjNVWziceWSW55cO9_jIEYcnuRBUmAoyjff5CkDV1Sk4u0YtokrspX5A1Vbbt1AYO-GdabS2jg1fZmhvQmytGo9Iku0mod_EBGtjROzaEY9uRq1ayRhrEID15xoQJ49TMFDuAsDT7LbqO6DCLwZcIyUUvvO-em7aghtXd0UrzyFAAuj"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md">zoom_in</span>
+</div>
+</div>
+<div class="aspect-[3/4] rounded-xl overflow-hidden bg-surface-container-highest border border-white/20 shadow-sm hover:shadow-md transition-all hover:scale-[1.02] cursor-pointer group relative">
+<img alt="Close up shot of a yellow jacket on a model, highlighting fabric texture and tailoring details. The lighting is bright and clean, fitting a modern, glassmorphic UI. The aesthetic blends advanced computer vision visualization with luxury e-commerce standards." class="w-full h-full object-cover opacity-80 filter brightness-110" data-alt="Close up shot of a yellow jacket on a model, highlighting fabric texture and tailoring details. The lighting is bright and clean, fitting a modern, glassmorphic UI. The aesthetic blends advanced computer vision visualization with luxury e-commerce standards." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAInot0OAzeFjtkhffkGrc3VkpwE6QqwYnlqUVFoEyY0sOx8jnlkMjE-ThOwzrduKF4uA0lyKWuPjSLVHacZqV-LgyLSRaue1NNOvMJNl3kZIoCX5nk6RvbdMNhZeRLy5D6gu8EKDlARNAU6szcAIdLaeK8vvpD9IjFrQOOZ7zGnrs0oXf8zbVm0TTaHjAI653KxaWqk90SxWXt_jxTpyIxaadeOpw-TvOd40dXH_GLAbSHq_8x1vwDwiMNgNdWIxK2z63YqSGN44TF"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md">zoom_in</span>
+</div>
+</div>
+<div class="aspect-[3/4] rounded-xl overflow-hidden bg-surface-container-highest border border-white/20 shadow-sm hover:shadow-md transition-all hover:scale-[1.02] cursor-pointer group relative">
+<img alt="Full body shot of a model wearing a yellow jacket in a minimal, bright studio. The high-key lighting supports an airy, optimistic brand personality. The photo represents the final output of an AI try-on rendering process." class="w-full h-full object-cover opacity-90" data-alt="Full body shot of a model wearing a yellow jacket in a minimal, bright studio. The high-key lighting supports an airy, optimistic brand personality. The photo represents the final output of an AI try-on rendering process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApz5tZzV8Tg56c_MB_Emy_B2-Iil75DWC_tJXrhPOcntVwMdGBRrqbHnmh3wWu9t9hktkmiHsT_Kbi7ynpm6dOYybj7GwYK600xDj9cyFXUE9agF7yZ_Mu9QKehk-TSVFbK32AYKTrEUogNqX0F5tchPJS0bmLIZnNffjsYIzpIEONWQnjaKVxMtGnqT9vK9Cm9TRMhjyVfVfTifPJfJXPZy4Pp5YQgIs2y7s1i2nIREzkSEz1ctx6Z_KZND-HkE9ohxQQWYPZZUUC"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md">zoom_in</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Contextual Cards & Alerts -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- 2. Upload Status Card -->
+<div class="glass-panel panel-emphasis-container rounded-xl p-5 flex flex-col gap-4">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container/10 text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined">cloud_done</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold text-on-background">模特图片已上传</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">model_front_view.jpg (2.4MB)</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary-container">check_circle</span>
+</div>
+<!-- Quality Tags -->
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm px-3 py-1 rounded-full border border-secondary/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">high_quality</span> 高分辨率
+                            </span>
+<span class="bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm px-3 py-1 rounded-full border border-secondary/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">accessibility_new</span> 全身人像识别
+                            </span>
+<span class="bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm px-3 py-1 rounded-full border border-outline-variant/30">
+                                光线充足
+                            </span>
+</div>
+</div>
+<!-- 3. Link Parse Card -->
+<div class="glass-panel rounded-xl p-5 flex flex-col gap-4">
+<div class="flex justify-between items-center pb-3 border-b border-outline-variant/30">
+<h4 class="font-label-md text-label-md font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">link</span>
+                                链接解析成功
+                            </h4>
+</div>
+<div class="flex gap-4 items-center">
+<div class="w-20 h-20 rounded-lg overflow-hidden border border-white/40 shadow-sm flex-shrink-0 bg-surface-container">
+<img alt="A flat lay or isolated product shot of a bright yellow jacket on a clean white background. High resolution and detailed, emphasizing the garment ready to be applied in a virtual try-on tool." class="w-full h-full object-cover" data-alt="A flat lay or isolated product shot of a bright yellow jacket on a clean white background. High resolution and detailed, emphasizing the garment ready to be applied in a virtual try-on tool." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI8bDeNzrsRSqJZX3nSbr9kaU2re2rGiM-GbeGcUS8mlHVqfJzyyAZ_1_ngqZWHUtcxIV-MYopr5fc2sPFLaL4nxMfAKHMUozIYHdoX5PoXNAHbLVM18L29KwgXf-ew6TZ9qtuXr_h8MuY63j-ECuYeOP4H2cceh-GGORHJ1fysikBWeWjvpDye_3zZWLSvv9uVXv36FqPDoYEl0x_tX06z7VS2WX4zY_ZVoodtaSez9GoIp4_h1cJvzmEwZLcVXn6b5Jd8u5pIBE1"/>
+</div>
+<div class="flex-grow">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1 line-clamp-1">Zara Premium Collection - Outerwear</p>
+<h5 class="font-body-md text-body-md font-semibold text-on-background mb-2">Classic Yellow Windbreaker</h5>
+<!-- Category Selector Chip -->
+<div class="inline-flex items-center gap-1 bg-[#E0F2FE] text-[#0369A1] px-3 py-1 rounded-full font-label-sm text-label-sm cursor-pointer hover:bg-[#BAE6FD] transition-colors border border-[#7DD3FC]">
+<span>类别：外套</span>
+<span class="material-symbols-outlined text-[14px]">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Error Feedback Panel (积分余额不足) -->
+<div class="bg-error-container/50 backdrop-blur-md border border-error/30 rounded-xl p-5 flex gap-4 items-start shadow-sm mt-auto relative overflow-hidden">
+<!-- Error accent stripe -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<div class="text-error mt-0.5">
+<span class="material-symbols-outlined">error</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-md text-label-md font-bold text-on-error-container mb-1">积分余额不足</h4>
+<p class="font-label-sm text-label-sm text-on-error-container/80 mb-3">本次生成需要 300 积分，当前可用余额为 250。</p>
+<button type="button" data-nav="profile" data-scroll="profile-credits" class="bg-error text-on-error font-label-sm text-label-sm px-4 py-2 rounded-lg shadow-sm hover:shadow transition-shadow">
+                                    查看积分
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</main>
