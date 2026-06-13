@@ -1,10 +1,32 @@
 # OPC 智能试衣平台
 
-这个目录现在包含一套完整的换装平台原型系统：
+这个仓库包含一套前后端职责分离的换装平台：
 
-- `index.html` + `shared/`：前端单页应用和原型样式。
-- `app.py`：平台后端，负责用户登录、Token、积分、任务、作品库和 PostgreSQL 数据。
-- `service.py`：换装工作流服务，可独立部署，也可由平台后端通过 `TRYON_SERVICE_URL` 调用。
+- `frontend/`：唯一的前端源码，包含单页应用、页面片段和静态资源。
+- `backend/`：平台 FastAPI 后端，按路由、业务服务、数据库、安全和配置拆分。
+- `workflow_service/`：独立的换装工作流服务，对接 ComfyUI 面板。
+- `app.py`、`service.py`：兼容启动入口，原有 Uvicorn 命令无需修改。
+
+## 项目结构
+
+```text
+.
+├── backend/
+│   ├── routers/          # HTTP 接口
+│   ├── services/         # 积分与试衣业务逻辑
+│   ├── config.py         # 环境配置
+│   ├── database.py       # 数据库连接与初始化
+│   ├── security.py       # 密码与 Token
+│   └── main.py           # FastAPI 应用装配
+├── frontend/
+│   ├── index.html
+│   └── shared/
+├── workflow_service/
+│   └── main.py
+├── tests/
+├── app.py
+└── service.py
+```
 
 ## 远程 PostgreSQL
 
@@ -65,8 +87,20 @@ http://127.0.0.1:8000
 http://42.192.112.233:8008
 ```
 
+独立启动仓库内的工作流服务：
+
+```bash
+uvicorn service:app --host 0.0.0.0 --port 8008
+```
+
 联调前端和数据库但暂时不调用模型时，可以设置：
 
 ```env
 OPC_MOCK_TRYON=true
+```
+
+## 验证
+
+```bash
+python -m unittest discover -s tests -v
 ```

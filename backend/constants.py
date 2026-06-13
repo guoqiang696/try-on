@@ -1,0 +1,7 @@
+MODE_COSTS = {"model": 5, "real": 5, "free": 5}
+
+DEMO_IMAGES = [
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuDVof0tdfpgZDW7gpB7FDkcCHhvmFaJgMeycPS_D1hqQA4PUAWOE78RZMeyiR4C-ehcbaRVn7AHyZub-KzAmfky2V2T_hSsf3TBc7V5rO0AwHHpWA4wE4ou44Lfp8hT69bkq44diPVdB1XbB7uxm0FYDHXzAq5TFJW4xB-3WQAIyeNSpiRsA3YX2-6wxQCY0G2gWeqMeyvL8SMdZi5GrWfzoeTqVgkTlfn2KKWS6KC1yhwvroUULAD8WbU0OTJBEsyrzsp8Jp7K",
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuApL9y2vTESD99DHU3WQq-NMtDNmwGX-pvLkYiajxJTrz65FBMHqKQN_jB_pRtf0hfhxtUuI6EQEt3R8_cDhucrEYJIRLnXH-yzDPFYBjB2PyH-rcYfzif_4-NiS7IxkGmeKOtERfQySRIMr_CUmqNN4H-si21nc5Ij5blNSHUujV9JhkzpN5I4s495YYP41DYigch5Ay1DlhvS26tZ45PG2Fx4RCURhypzDnVWZnpip1YyWd7JAZK4gbgTw92C4MC0QS5DeRBJsfv6",
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuCgNAIIEWpIi67nYxFbpivtr4MgV-AXre2ENgE0kmUFcBOAxm8-QLb7iVRJmrLYYS5Hh9GMatQHfWVM0iEfudd9wcVwVvIK65uukqGTPcfLubI6N_KATKbLcx1G3bnkfmlvNi9YcnFzhpB8nCQssWzM_pguykMBBTJ9nVMMhXoOgr8mjegY-rcMpdI1GaNKoKDg_Brm_lc4doAsFNKpQRp2zBObxb1iF07X1kNLPMba82H1udY2-TuZBuGsWAQrZFCowYcIIMzhzZhT",
+]
