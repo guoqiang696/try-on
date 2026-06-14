@@ -92,15 +92,59 @@
     background: linear-gradient(140deg, #8b6bff 0%, #5b34d6 100%);
     box-shadow: 0 8px 22px rgba(124, 92, 255, 0.4);
   }
+
+  /* 多段背景视频交叉淡入轮播 */
+  .tb-slides { position: absolute; inset: 0; }
+  .tb-media .tb-slide {
+    opacity: 0;
+    transition: opacity 1.1s ease;
+    will-change: opacity;
+  }
+  .tb-media .tb-slide.is-active { opacity: 1; z-index: 2; }
+
+  /* 底部指示点 */
+  .tb-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 5;
+  }
+  .tb-dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: width .35s ease, background-color .35s ease;
+  }
+  .tb-dot:hover { background: rgba(255, 255, 255, 0.7); }
+  .tb-dot.is-active { width: 22px; background: #fff; }
 </style>
 </head>
 <body class="text-white antialiased">
   <main class="min-h-screen grid grid-cols-1 md:grid-cols-2">
-    <!-- 左：视频 -->
-    <section class="tb-media relative hidden md:block" aria-hidden="true">
-      <video autoplay muted loop playsinline preload="auto" poster="assets/login-poster.jpg">
-        <source src="assets/login-bg.mp4" type="video/mp4"/>
-      </video>
+    <!-- 左：视频轮播 -->
+    <section class="tb-media relative hidden md:block" aria-label="背景视频轮播">
+      <div class="tb-slides" id="tb-slides">
+        <video class="tb-slide is-active" muted playsinline preload="auto" poster="assets/login-poster.jpg">
+          <source src="assets/login-bg.mp4" type="video/mp4"/>
+        </video>
+        <video class="tb-slide" muted playsinline preload="auto">
+          <source src="assets/login-bg1.mp4" type="video/mp4"/>
+        </video>
+        <video class="tb-slide" muted playsinline preload="auto">
+          <source src="assets/login-bg2.mp4" type="video/mp4"/>
+        </video>
+        <video class="tb-slide" muted playsinline preload="auto">
+          <source src="assets/login-bg3.mp4" type="video/mp4"/>
+        </video>
+      </div>
+      <div class="tb-dots" id="tb-dots"></div>
     </section>
 
     <!-- 右：登录表单 -->
@@ -206,6 +250,83 @@
           showError(err && err.message ? err.message : "网络错误，请稍后再试");
           submitEl.disabled = false;
           submitEl.innerHTML = label;
+        }
+      });
+    })();
+  </script>
+
+  <script>
+    // 左侧背景视频轮播：多段交叉淡入，每段最长展示 SLIDE_MS，或该段自然播完即切
+    (function () {
+      var slides = Array.prototype.slice.call(document.querySelectorAll("#tb-slides .tb-slide"));
+      var dotsWrap = document.getElementById("tb-dots");
+      if (!slides.length) return;
+
+      // 只有一段：单纯循环播放，不启用轮播逻辑
+      if (slides.length < 2) {
+        slides[0].setAttribute("loop", "");
+        try { slides[0].play(); } catch (e) {}
+        if (dotsWrap) dotsWrap.style.display = "none";
+        return;
+      }
+
+      var SLIDE_MS = 8000; // 每段最长展示时间（毫秒）
+      var current = 0;
+      var timer = null;
+
+      // 生成底部指示点
+      slides.forEach(function (_, i) {
+        var dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "tb-dot" + (i === 0 ? " is-active" : "");
+        dot.setAttribute("aria-label", "切换到第 " + (i + 1) + " 段背景");
+        dot.addEventListener("click", function () { go(i); });
+        dotsWrap.appendChild(dot);
+      });
+      var dots = Array.prototype.slice.call(dotsWrap.children);
+
+      function setActive(index) {
+        slides.forEach(function (v, i) { v.classList.toggle("is-active", i === index); });
+        dots.forEach(function (d, i) { d.classList.toggle("is-active", i === index); });
+      }
+
+      function playCurrent() {
+        var v = slides[current];
+        try { v.currentTime = 0; } catch (e) {}
+        var p = v.play();
+        if (p && typeof p.then === "function") p.catch(function () {});
+        // 预热下一段，避免切换时出现加载卡顿
+        var next = slides[(current + 1) % slides.length];
+        next.preload = "auto";
+      }
+
+      function go(index) {
+        clearTimeout(timer);
+        try { slides[current].pause(); } catch (e) {}
+        current = (index + slides.length) % slides.length;
+        setActive(current);
+        playCurrent();
+        timer = setTimeout(function () { go(current + 1); }, SLIDE_MS);
+      }
+
+      // 某段播完立即推进（视频较短时兜底，防止画面静止）
+      slides.forEach(function (v) {
+        v.addEventListener("ended", function () { go(current + 1); });
+      });
+
+      // 启动
+      setActive(0);
+      playCurrent();
+      timer = setTimeout(function () { go(1); }, SLIDE_MS);
+
+      // 标签页隐藏时暂停，回来后从当前段继续，避免后台空转
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+          clearTimeout(timer);
+          try { slides[current].pause(); } catch (e) {}
+        } else {
+          playCurrent();
+          timer = setTimeout(function () { go(current + 1); }, SLIDE_MS);
         }
       });
     })();
