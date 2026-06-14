@@ -1,6 +1,8 @@
 (function () {
   const API_BASE = window.OPC_API_BASE || "";
   const TOKEN_KEY = "opc-token";
+  const LOGIN_PAGE = "shared/login.html";
+  let redirectingToAuth = false;
   const LAST_JOB_KEY = "opc-last-job-id";
   const GALLERY_UNREAD_KEY = "opc-gallery-unread";
   const CIRCLE_LEN = 226.2;
@@ -154,9 +156,11 @@
   }
 
   function showAuth() {
-    ensureAuthModal();
-    $("#opc-auth-modal").classList.remove("hidden");
-    $("#opc-auth-modal").classList.add("flex");
+    // 跳转到独立登录页（替换旧的模态弹窗）；带上当前位置以便登录后返回
+    if (redirectingToAuth) return;
+    redirectingToAuth = true;
+    const back = encodeURIComponent(location.pathname + location.hash);
+    window.location.href = `${LOGIN_PAGE}?redirect=${back}`;
   }
 
   function hideAuth() {
