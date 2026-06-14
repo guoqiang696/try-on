@@ -1,0 +1,6 @@
+{
+  "enabledMcpjsonServers": [
+    "location-weather",
+    "baidu-search"
+  ]
+}

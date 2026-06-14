@@ -1,0 +1,38 @@
+<main data-main tabindex="-1" class="opc-square-page">
+<header class="opc-square-header">
+<div>
+<h1>广场</h1>
+<p>发现大家的 AI 试衣灵感</p>
+</div>
+<div class="opc-square-header-actions">
+<button type="button" id="opc-square-publish-btn" class="opc-square-btn-primary"><span class="material-symbols-outlined text-[18px]">add</span>发布作品</button>
+<button type="button" id="opc-square-my-posts-btn" class="opc-square-btn-secondary"><span class="material-symbols-outlined text-[18px]">person</span>我的发布</button>
+</div>
+</header>
+<nav class="opc-square-tabs" aria-label="广场分类">
+<button type="button" class="is-active" data-square-tab="recommend">推荐</button>
+<button type="button" data-square-tab="latest">最新</button>
+<button type="button" data-square-tab="model">模特</button>
+<button type="button" data-square-tab="tryon">试衣图</button>
+<button type="button" data-square-tab="top">高赞</button>
+<button type="button" data-square-tab="following">关注</button>
+</nav>
+<div class="opc-square-search-row">
+<div class="opc-square-search">
+<span class="material-symbols-outlined">search</span>
+<input type="search" id="opc-square-search" placeholder="搜索模特、风格、服装、用户" autocomplete="off"/>
+</div>
+<div class="opc-square-chips" aria-label="筛选">
+<button type="button" data-square-chip="通勤">通勤</button>
+<button type="button" data-square-chip="韩系">韩系</button>
+<button type="button" data-square-chip="街头">街头</button>
+<button type="button" data-square-chip="高定">高定</button>
+<button type="button" data-square-chip="运动">运动</button>
+<button type="button" data-square-chip="男装">男装</button>
+<button type="button" data-square-chip="女装">女装</button>
+<button type="button" data-square-chip="可保存模特">可保存模特</button>
+<button type="button" data-square-chip="可复用风格">可复用风格</button>
+</div>
+</div>
+<div class="opc-square-grid" id="opc-square-grid"></div>
+</main>

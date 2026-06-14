@@ -2,6 +2,7 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 
+from backend.constants import DEMO_IMAGES
 from backend.database import connect
 from backend.dependencies import current_user
 from backend.services.credits import record_credit_change
@@ -30,6 +31,7 @@ async def create_tryon_job(
     image: str = Form(""),
     person_image: str = Form(""),
     clothing_image: str = Form(""),
+    portrait_authorized: bool = Form(False),
     image_file: Optional[UploadFile] = File(default=None),
     person_file: Optional[UploadFile] = File(default=None),
     clothing_file: Optional[UploadFile] = File(default=None),
@@ -58,12 +60,14 @@ async def create_tryon_job(
             image = await upload_image(clothing_file)
         image = image or person_image or clothing_image
         if not image:
-            raise HTTPException(
-                status_code=400, detail="自由风格需要上传一张服装图片"
-            )
+            image = DEMO_IMAGES[0]
         person_image = image
         clothing_image = image
     else:
+        if mode == "real" and not portrait_authorized:
+            raise HTTPException(
+                status_code=400, detail="真人试衣需要确认肖像授权"
+            )
         if person_file and person_file.filename:
             person_image = await upload_image(person_file)
         if clothing_file and clothing_file.filename:
@@ -184,17 +188,40 @@ async def get_job(
                     )
                     if usable_results:
                         persist_results(conn, job, usable_results)
+                        actual_success = min(
+                            max(1, job["quantity"]),
+                            len(usable_results),
+                        )
+                        actual_cost = calculate_cost(
+                            job["mode"], actual_success
+                        )
+                        refund = max(0, job["cost"] - actual_cost)
+                        if refund:
+                            record_credit_change(
+                                conn,
+                                user["id"],
+                                refund,
+                                "按实际成功张数退款",
+                                job["id"],
+                            )
                         job = conn.execute(
                             """
                             UPDATE tryon_jobs
-                            SET status = 'completed', updated_at = now(),
-                                completed_at = now()
+                            SET status = 'completed', cost = %s,
+                                updated_at = now(), completed_at = now()
                             WHERE id = %s
                             RETURNING *
                             """,
-                            (job_id,),
+                            (actual_cost, job_id),
                         ).fetchone()
                     else:
+                        record_credit_change(
+                            conn,
+                            user["id"],
+                            job["cost"],
+                            "生成失败退款",
+                            job["id"],
+                        )
                         job = conn.execute(
                             """
                             UPDATE tryon_jobs

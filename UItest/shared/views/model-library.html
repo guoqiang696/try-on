@@ -1,0 +1,214 @@
+<main data-main tabindex="-1" class="opc-workspace-page">
+  <div class="opc-model-catalog">
+    <!-- 一级 Tab: opc-apple-segment -->
+    <div class="opc-apple-segment mb-6">
+      <button type="button" class="is-active" data-model-lib-tab="existing">
+        <span class="material-symbols-outlined text-[18px]">people</span>已有模特
+      </button>
+      <button type="button" data-model-lib-tab="add">
+        <span class="material-symbols-outlined text-[18px]">add</span>新增模特
+      </button>
+    </div>
+
+    <!-- Tab 1: 已有模特 -->
+    <div id="model-lib-tab-existing" class="model-lib-tab-panel">
+      <div class="glass-panel opc-panel opc-toolbar opc-model-catalog-toolbar">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="opc-toolbar-label">性别</span>
+          <button type="button" class="opc-chip is-active" data-filter-gender="all">全部</button>
+          <button type="button" class="opc-chip" data-filter-gender="女">女</button>
+          <button type="button" class="opc-chip" data-filter-gender="男">男</button>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="opc-toolbar-label">风格</span>
+          <button type="button" class="opc-chip is-active" data-filter-style="all">全部</button>
+          <button type="button" class="opc-chip" data-filter-style="休闲">休闲</button>
+          <button type="button" class="opc-chip" data-filter-style="时髦">时髦</button>
+          <button type="button" class="opc-chip" data-filter-style="街头">街头</button>
+          <button type="button" class="opc-chip" data-filter-style="优雅">优雅</button>
+        </div>
+        <div class="flex items-center gap-3 ml-auto">
+          <div class="relative">
+            <select class="opc-select" id="model-sort-select">
+              <option value="default">默认排序</option>
+              <option value="height-desc">身高从高到低</option>
+              <option value="height-asc">身高从低到高</option>
+              <option value="newest">最新添加</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[18px]">expand_more</span>
+          </div>
+        </div>
+      </div>
+      <div class="opc-model-catalog-grid" id="model-library-grid"></div>
+      <div id="model-library-empty" class="opc-gallery-empty hidden">
+        <span class="material-symbols-outlined">person_off</span>
+        <p>模特库中还没有模特</p>
+        <button type="button" data-model-lib-tab-trigger="add" class="opc-back-link mt-4 mx-auto">去添加模特</button>
+      </div>
+    </div>
+
+    <!-- Tab 2: 新增模特 -->
+    <div id="model-lib-tab-add" class="model-lib-tab-panel hidden">
+      <!-- 二级 Tab -->
+      <div class="opc-apple-segment opc-apple-segment--small mb-6">
+        <button type="button" class="is-active" data-add-model-tab="single">
+          <span class="material-symbols-outlined text-[16px]">upload_file</span>单张上传
+        </button>
+        <button type="button" data-add-model-tab="batch">
+          <span class="material-symbols-outlined text-[16px]">folder_zip</span>批量上传
+        </button>
+        <button type="button" data-add-model-tab="ai">
+          <span class="material-symbols-outlined text-[16px]">auto_awesome</span>AI生成
+        </button>
+      </div>
+
+      <!-- 单张上传 -->
+      <div id="add-model-tab-single" class="add-model-tab-panel">
+        <div class="glass-panel opc-panel mb-6 p-6">
+          <div class="flex flex-col md:flex-row gap-6 items-start">
+            <div class="flex-1 w-full">
+              <h2 class="font-headline-md text-headline-md text-on-background mb-2">上传模特照片</h2>
+              <p class="font-body-md text-body-md text-on-surface-variant mb-4">上传模特照片，填写基本信息，即可添加到模特库</p>
+              <div class="opc-upload-form-row">
+                <div class="opc-upload-slot">
+                  <div class="opc-upload opc-upload--interactive" id="model-upload-trigger">
+                    <div class="opc-upload-icon"><span class="material-symbols-outlined">add_photo_alternate</span></div>
+                    <p class="opc-upload-title">点击或拖拽上传模特照片</p>
+                    <p class="opc-upload-hint">支持 PNG / JPG，建议上传正面全身照</p>
+                  </div>
+                </div>
+                <div class="opc-upload-fields min-w-0">
+                  <div class="space-y-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">模特姓名</label>
+                    <input type="text" id="model-name-input" class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary transition-[border-color,box-shadow]" placeholder="输入模特姓名">
+                  </div>
+                  <div class="space-y-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">身高 (cm)</label>
+                    <input type="number" id="model-height-input" class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary transition-[border-color,box-shadow]" placeholder="175">
+                  </div>
+                  <div class="space-y-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">风格标签</label>
+                    <input type="text" id="model-tags-input" class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary transition-[border-color,box-shadow]" placeholder="休闲, 时髦, 优雅 (用逗号分隔)">
+                  </div>
+                  <div class="space-y-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">性别</label>
+                    <div class="flex gap-2">
+                      <button type="button" class="opc-chip is-active" data-model-gender="女">女</button>
+                      <button type="button" class="opc-chip" data-model-gender="男">男</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-end gap-3 pt-2 border-t border-outline-variant/20 w-full md:w-auto md:self-end">
+              <button type="button" id="model-add-btn" class="opc-summary-cta" style="width:auto; padding: 10px 24px;">
+                <span class="material-symbols-outlined">add</span> 添加到模特库
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 批量上传 -->
+      <div id="add-model-tab-batch" class="add-model-tab-panel hidden">
+        <div class="glass-panel opc-panel mb-6 p-6">
+          <h2 class="font-headline-md text-headline-md text-on-background mb-2">批量上传模特</h2>
+          <p class="font-body-md text-body-md text-on-surface-variant mb-4">选择文件夹或多张图片，一次性导入多个模特</p>
+          <div class="flex flex-col gap-4">
+            <div class="opc-upload opc-upload--interactive" id="model-batch-upload-trigger">
+              <div class="opc-upload-icon"><span class="material-symbols-outlined">folder_zip</span></div>
+              <p class="opc-upload-title">点击选择文件夹或多张图片</p>
+              <p class="opc-upload-hint">支持选择整个文件夹（含子目录），自动过滤非图片文件</p>
+            </div>
+            <div id="batch-upload-progress" class="hidden">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-label-md text-label-md text-on-background">批量处理中...</span>
+                <span id="batch-progress-text" class="font-label-sm text-label-sm text-on-surface-variant">0/0</span>
+              </div>
+              <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+                <div id="batch-progress-bar" class="h-full bg-primary rounded-full transition-all duration-300" style="width: 0%"></div>
+              </div>
+            </div>
+            <div id="batch-upload-results" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+            <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant/20">
+              <button type="button" id="model-batch-add-btn" class="opc-summary-cta hidden" style="width:auto; padding: 10px 24px;">
+                <span class="material-symbols-outlined">save</span> 保存到模特库
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI生成 -->
+      <div id="add-model-tab-ai" class="add-model-tab-panel hidden">
+        <div class="glass-panel opc-panel mb-6 p-6">
+          <div class="flex flex-col gap-6">
+            <div class="flex flex-col md:flex-row gap-6">
+              <div class="flex-1 flex flex-col gap-4">
+                <div>
+                  <h2 class="font-headline-md text-headline-md text-on-background mb-2">AI生成模特</h2>
+                  <p class="font-body-md text-body-md text-on-surface-variant mb-4">描述您想要的模特形象，AI将为您生成虚拟模特</p>
+                </div>
+                <div class="space-y-1">
+                  <label class="font-label-sm text-label-sm text-on-surface-variant">模特描述</label>
+                  <textarea id="ai-model-prompt" class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary transition-[border-color,box-shadow] resize-none" rows="4" placeholder="例如：一位年轻的东亚女性模特，长发，微笑，穿着白色连衣裙，站在白色背景前..."></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="space-y-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">模特姓名</label>
+                    <input type="text" id="ai-model-name-input" class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary transition-[border-color,box-shadow]" placeholder="输入模特姓名">
+                  </div>
+                  <div class="space-y-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">身高 (cm)</label>
+                    <input type="number" id="ai-model-height-input" class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary transition-[border-color,box-shadow]" placeholder="175">
+                  </div>
+                </div>
+                <div class="space-y-1">
+                  <label class="font-label-sm text-label-sm text-on-surface-variant">性别</label>
+                  <div class="flex gap-2">
+                    <button type="button" class="opc-chip is-active" data-ai-model-gender="女">女</button>
+                    <button type="button" class="opc-chip" data-ai-model-gender="男">男</button>
+                  </div>
+                </div>
+                <div class="space-y-1">
+                  <label class="font-label-sm text-label-sm text-on-surface-variant">风格标签</label>
+                  <input type="text" id="ai-model-tags-input" class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary transition-[border-color,box-shadow]" placeholder="休闲, 时髦, 优雅 (用逗号分隔)">
+                </div>
+                <div class="flex justify-end gap-3 pt-2 border-t border-outline-variant/20">
+                  <button type="button" id="ai-model-generate-btn" class="opc-summary-cta" style="width:auto; padding: 10px 24px;">
+                    <span class="material-symbols-outlined">auto_awesome</span> 生成模特
+                  </button>
+                </div>
+              </div>
+              <div class="flex-1 min-w-[280px] max-w-md">
+                <div class="glass-panel opc-panel p-4 h-full flex flex-col">
+                  <h3 class="font-label-md text-label-md text-on-surface-variant mb-3 uppercase tracking-wider">生成预览</h3>
+                  <div id="ai-model-preview" class="flex-1 min-h-[300px] rounded-xl bg-surface-container-low flex items-center justify-center relative overflow-hidden">
+                    <div id="ai-model-preview-placeholder" class="text-center p-6">
+                      <span class="material-symbols-outlined text-6xl text-outline/30 mb-3">person</span>
+                      <p class="font-body-md text-body-md text-on-surface-variant">AI生成的模特图片将在这里显示</p>
+                    </div>
+                    <div id="ai-model-generating" class="absolute inset-0 flex flex-col items-center justify-center bg-surface/80 backdrop-blur-sm hidden">
+                      <div class="w-16 h-16 rounded-full border-4 border-primary/20 border-t-primary animate-spin mb-4"></div>
+                      <p class="font-label-md text-label-md text-on-background">AI生成中...</p>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">请稍候，正在创建您的虚拟模特</p>
+                    </div>
+                    <img id="ai-model-preview-img" alt="AI生成预览" class="absolute inset-0 w-full h-full object-cover hidden" />
+                  </div>
+                  <div class="flex gap-2 mt-3">
+                    <button type="button" id="ai-model-confirm-btn" class="opc-summary-cta flex-1 hidden" style="padding: 10px 16px;">
+                      <span class="material-symbols-outlined">save</span> 保存到模特库
+                    </button>
+                    <button type="button" id="ai-model-regenerate-btn" class="opc-summary-cta flex-1 hidden" style="padding: 10px 16px; background: linear-gradient(135deg, #3d3d5c, #2d2d4a);">
+                      <span class="material-symbols-outlined">refresh</span> 重新生成
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

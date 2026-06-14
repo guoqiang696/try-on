@@ -1,4 +1,5 @@
 import json
+import math
 import secrets
 from typing import Any
 
@@ -7,7 +8,7 @@ import psycopg
 from fastapi import HTTPException, UploadFile
 
 from backend.config import settings
-from backend.constants import DEMO_IMAGES, MODE_COSTS
+from backend.constants import BASE_GENERATION_COST, DEMO_IMAGES, MODE_COST_MULTIPLIERS
 
 
 async def upload_image(file: UploadFile) -> str:
@@ -133,9 +134,10 @@ async def fetch_remote_results(
 
 
 def calculate_cost(mode: str, quantity: int) -> int:
-    if mode not in MODE_COSTS:
+    if mode not in MODE_COST_MULTIPLIERS:
         raise HTTPException(status_code=400, detail="未知生成模式")
-    return MODE_COSTS[mode]
+    safe_quantity = max(1, min(int(quantity or 1), 8))
+    return math.ceil(BASE_GENERATION_COST * safe_quantity * MODE_COST_MULTIPLIERS[mode])
 
 
 def final_result_items(

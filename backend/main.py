@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.config import FRONTEND_DIR, settings
 from backend.database import init_db
-from backend.routers import auth, credits, gallery, health, profile, tryon
+from backend.routers import auth, credits, gallery, health, models, profile, square, tryon
 
 
 @asynccontextmanager
@@ -44,6 +44,8 @@ def create_app() -> FastAPI:
     app.include_router(profile.router)
     app.include_router(tryon.router)
     app.include_router(gallery.router)
+    app.include_router(models.router)
+    app.include_router(square.router)
     app.include_router(credits.router)
 
     @app.get("/", include_in_schema=False)

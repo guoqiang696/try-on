@@ -6,9 +6,9 @@
   const CIRCLE_LEN = 226.2;
   const GENERATION_COST = 5;
   const SOURCE_META = {
-    model: { modeLabel: "模特试衣", title: "试衣效果图", baseCost: GENERATION_COST },
-    real: { modeLabel: "真人试衣", title: "试衣效果图", baseCost: GENERATION_COST },
-    free: { modeLabel: "自由风格", title: "试衣效果图", baseCost: GENERATION_COST },
+    model: { modeLabel: "模特试衣", title: "试衣效果图", baseCost: GENERATION_COST, multiplier: 1 },
+    real: { modeLabel: "真人试衣", title: "试衣效果图", baseCost: GENERATION_COST, multiplier: 1.2 },
+    free: { modeLabel: "自由风格", title: "试衣效果图", baseCost: GENERATION_COST, multiplier: 1 },
   };
   const state = {
     user: null,
@@ -212,8 +212,20 @@
     return match ? Math.max(1, parseInt(match[1], 10)) : (state.quantity[routeName] || 1);
   }
 
-  function generationCost() {
-    return GENERATION_COST;
+  function generationCost(routeName, quantity = 1) {
+    const meta = metaFor(routeName);
+    return Math.ceil(meta.baseCost * Math.max(1, quantity) * meta.multiplier);
+  }
+
+  function syncCostForRoute(routeName) {
+    const view = routeView(routeName);
+    if (!view) return;
+    const quantity = state.quantity[routeName] || 1;
+    const cost = generationCost(routeName, quantity);
+    const costEl = $(".opc-summary-cost-value", view);
+    if (costEl) {
+      costEl.innerHTML = `<span class="material-symbols-outlined">monetization_on</span> ${cost} 积分`;
+    }
   }
 
   function ensureGenerationModal() {
@@ -468,8 +480,9 @@
     form.set("quantity", state.quantity[routeName] || 1);
     form.set("garment_type", "上衣");
     if (routeName === "model") {
+      const selectedModel = window.OPC?.ModelLibrary?.getSelectedModel?.();
       form.set("title", "模特试衣");
-      form.set("person_image", firstImage('.opc-view[data-route="model"] section img'));
+      form.set("person_image", selectedModel?.image || firstImage('.opc-view[data-route="model"] section img'));
       const file = state.files["model:clothing"];
       if (file) form.set("clothing_file", file);
       else form.set("clothing_image", $("#url-input", view)?.value || firstImage('.opc-view[data-route="model"] img'));
@@ -477,6 +490,7 @@
     }
     if (routeName === "real") {
       form.set("title", "真人试衣");
+      form.set("portrait_authorized", $("[data-opc-portrait-consent]", view)?.checked ? "true" : "false");
       const person = state.files["real:person"];
       const clothing = state.files["real:clothing"];
       if (person) form.set("person_file", person);
@@ -523,11 +537,13 @@
     }
     if (routeName === "real") {
       if (!state.files["real:person"]) return { valid: false, step: 1, message: "请先上传您的真人照片" };
+      if (!$("[data-opc-portrait-consent]", view)?.checked) return { valid: false, step: 3, message: "请先确认肖像授权" };
     }
     if (routeName === "free") {
       const prompt = $("#prompt-input", view)?.value?.trim();
+      const noImage = $("[data-opc-no-image]", view)?.checked;
       if (!prompt) return { valid: false, step: 2, message: "请先填写自由风格描述" };
-      if (!state.files["free:reference"]) return { valid: false, step: 1, message: "请先上传一张服装图片" };
+      if (!noImage && !state.files["free:reference"]) return { valid: false, step: 1, message: "请先上传一张服装图片，或勾选无图模式" };
     }
     return { valid: true };
   }
@@ -550,6 +566,7 @@
     state.quantity[routeName] = 1;
     bindUploaders();
     updateRouteSummary(routeName);
+    syncCostForRoute(routeName);
   }
 
   async function createJob(routeName) {
@@ -596,7 +613,7 @@
     openConfirmModal({
       routeName,
       quantity,
-      cost: generationCost(),
+      cost: generationCost(routeName, quantity),
       summary: collectSummary(routeName),
     });
   }
@@ -628,6 +645,7 @@
       const next = Math.max(1, Math.min(8, current + (isAdd ? 1 : -1)));
       state.quantity[routeName] = next;
       if (label) label.textContent = `${next} 张图片`;
+      syncCostForRoute(routeName);
     });
   }
 
@@ -765,7 +783,7 @@
     const grid = $(".opc-gallery-grid", view) || $all(".grid", view).find((el) => el.className.includes("xl:grid-cols-4"));
     if (!grid) return;
     const itemsMarkup = data.items.map((item) => `
-      <article class="group glass-panel opc-gallery-card" data-opc-gallery-status="done">
+      <article class="group glass-panel opc-gallery-card" data-opc-gallery-status="done" data-opc-work-id="${item.id}">
         <div class="opc-gallery-card-media">
           <img src="${item.thumbnail_url || item.image_url}" alt="生成作品" />
           <span class="opc-gallery-badge">${modeName(item.mode)}</span>
@@ -773,6 +791,9 @@
             <span class="material-symbols-outlined text-[18px]">${item.favorite ? "favorite" : "favorite_border"}</span>
           </button>
           <div class="opc-gallery-overlay">
+            <button type="button" class="px-4 h-10 flex items-center gap-2 bg-white/90 text-primary rounded-full font-label-md text-label-md shadow-lg hover:bg-white transition-colors" data-opc-share-square="${item.id}">
+              <span class="material-symbols-outlined text-[18px]">share</span> 发布到广场
+            </button>
             <a href="${item.image_url}" download target="_blank" class="opc-icon-btn bg-white/90" title="下载">
               <span class="material-symbols-outlined">download</span>
             </a>
@@ -869,6 +890,7 @@
     setTimeout(() => {
       bindUploaders();
       updateRouteSummary(state.route);
+      syncCostForRoute(state.route);
       if (state.route === "gallery") refreshGallery().catch((error) => toast(error.message, "error"));
       if (state.route === "profile") refreshProfile().catch((error) => toast(error.message, "error"));
       pollLastJob();
@@ -879,6 +901,7 @@
     state.route = event.detail?.route || route();
     bindUploaders();
     updateRouteSummary(state.route);
+    syncCostForRoute(state.route);
     if (state.route === "gallery") {
       setGalleryUnread(false);
       refreshGallery().catch((error) => toast(error.message, "error"));
@@ -899,7 +922,10 @@
     bindFormState();
     bindGalleryTabs();
     bindUploaders();
-    ["model", "real", "free"].forEach(updateRouteSummary);
+    ["model", "real", "free"].forEach((routeName) => {
+      updateRouteSummary(routeName);
+      syncCostForRoute(routeName);
+    });
     setGalleryUnread(sessionStorage.getItem(GALLERY_UNREAD_KEY) === "1");
     refreshAll();
     if (!state.token) showAuth();
